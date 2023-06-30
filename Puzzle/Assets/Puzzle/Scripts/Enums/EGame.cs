@@ -4,6 +4,5 @@ namespace Assets.BackToSchool.Scripts.Enums
     {
         Camera,
         GameManager,
-        InputManager,
     }
 }

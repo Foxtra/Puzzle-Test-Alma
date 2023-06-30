@@ -2,7 +2,6 @@ using Assets.BackToSchool.Scripts.Enums;
 using Assets.Puzzle.Scripts.Enums;
 using Assets.Puzzle.Scripts.Extensions;
 using Assets.Puzzle.Scripts.Interfaces.GameMagagement;
-using Assets.Puzzle.Scripts.Interfaces.Input;
 using Assets.Puzzle.Scripts.Interfaces.UI;
 using Assets.Puzzle.Scripts.UI;
 using System;
@@ -17,12 +16,6 @@ namespace Assets.Puzzle.Scripts.GameManagement
         public Camera CreateCamera()
         {
             var result = CreatePrefabInstance<Camera, EGame>(EGame.Camera);
-            return result;
-        }
-
-        public IInputManager CreateInputManager()
-        {
-            var result = CreatePrefabInstance<IInputManager, EGame>(EGame.InputManager);
             return result;
         }
 

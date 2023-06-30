@@ -16,6 +16,6 @@ namespace Assets.Puzzle.Scripts.Parameters
         };
 
         public static string PicturesPath = "EPictures";
-        public static int NumberOfGameModels = 3;
+        public static string GameOverText = "Your Time is";
     }
 }
