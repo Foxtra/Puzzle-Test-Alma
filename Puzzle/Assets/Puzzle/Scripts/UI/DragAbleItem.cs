@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Puzzle.Scripts.UI
@@ -33,13 +34,50 @@ namespace Assets.Puzzle.Scripts.UI
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            CheckOtherPiecesOverlaping();
+            CheckIfOutOfScreen();
             _canvasGroup.blocksRaycasts = true;
         }
-
         public void ResetPosition()
         {
             _rectTransform.anchoredPosition = _initialAnchoredPosition;
             transform.SetParent(_InitialParent);
+        }
+
+        private void CheckIfOutOfScreen()
+        {
+            var pos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            if (pos.x > 1)
+            {
+                ResetPosition();
+            }
+            if (pos.x < 0)
+            {
+                ResetPosition();
+            }
+            if (pos.y > 1)
+            {
+                ResetPosition();
+            }
+            if (pos.y < 0)
+            {
+                ResetPosition();
+            }
+        }
+        private void CheckOtherPiecesOverlaping()
+        {
+            bool check = false;
+            float range = 50f;
+
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
+            foreach (Collider2D hit in hitColliders)
+            {
+                if (hit.name != gameObject.name && hit.gameObject.tag == "Piece")
+                {
+                    ResetPosition();
+                    break;
+                }
+            }
         }
     }
 }

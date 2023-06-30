@@ -24,6 +24,7 @@ namespace Assets.Puzzle.Scripts.UI
             {
                 PieceWasMoved?.Invoke(int.Parse(gameObject.name), int.Parse(dropped.name));
                 _lastDroppedItem = dropped;
+                dropped.transform.SetParent(GetComponent<Transform>().parent);
             }
         }
     }
