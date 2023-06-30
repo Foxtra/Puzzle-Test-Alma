@@ -1,7 +1,6 @@
 ﻿using Assets.Puzzle.Scripts.Interfaces.UI;
 using UnityEngine;
 
-
 namespace Assets.Puzzle.Scripts.UI
 {
     public class View : MonoBehaviour, IView

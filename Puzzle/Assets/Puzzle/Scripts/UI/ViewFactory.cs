@@ -2,7 +2,6 @@
 using Assets.Puzzle.Scripts.Interfaces.GameMagagement;
 using Assets.Puzzle.Scripts.Interfaces.UI;
 
-
 namespace Assets.Puzzle.Scripts.UI
 {
     public class ViewFactory : IViewFactory

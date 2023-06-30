@@ -23,33 +23,16 @@ namespace Assets.Puzzle.Scripts.UI
 
         public void SetRowsCount(int size) => _size = size;
 
-        public void ShowAvailablePieces(Dictionary<int, GameObject> pictureState)
+        public void ShowAvailablePieces(List<GameObject> pictureState)
         {
-            List<GameObject> items = new List<GameObject>();
-            foreach (var item in pictureState)
+            List<GameObject> items = CreateObjects(pictureState, AvailablePiecesAreaContent);
+            MoveAndResizeObjects(items, AvailablePiecesAreaContent);
+
+            for (int i = 0; i < items.Count; i++)
             {
-                var go = Instantiate(item.Value, AvailablePiecesAreaContent);
-                go.AddComponent(typeof(DragAbleItem));
-                items.Add(go);
-            }
-
-            for (int row = 0; row < _size; row++)
-            {
-                for (int col = 0; col < _size; col++)
-                {
-                    var areaWidth = AvailablePiecesAreaContent.GetComponent<RectTransform>().rect.width;
-                    var areaHeight = AvailablePiecesAreaContent.GetComponent<RectTransform>().rect.height;
-
-                    items[col + (row * _size)].GetComponent<RectTransform>().sizeDelta = new Vector2(areaWidth / (float)_size,
-                        areaHeight / (float)_size);
-
-                    items[col + (row * _size)].transform.localPosition =
-                        new Vector3(areaWidth * (col / (float)_size), areaHeight * (row / (float)_size), 0);
-
-                    items[col + (row * _size)].name = $"{(row * _size) + col}";
-                    _initialItems.Add(col + (row * _size));
-                    _currentItems.Add(0);
-                }
+                items[i].AddComponent(typeof(DragAbleItem));
+                _initialItems.Add(i);
+                _currentItems.Add(0);
             }
 
             for (int i = 0; i < items.Count; i++)
@@ -63,29 +46,53 @@ namespace Assets.Puzzle.Scripts.UI
 
         public void ShowPlaceHolders(int placeholdersCount)
         {
-            List<GameObject> _placeholderItems = new List<GameObject>();
-            for (int i = 0; i < placeholdersCount; i++)
+            _placeholderItems = CreateObjects(placeholdersCount, Placeholder.gameObject, CollectPictureAreaContent);
+            MoveAndResizeObjects(_placeholderItems, CollectPictureAreaContent);
+
+            foreach (var item in _placeholderItems)
             {
-                var item = Instantiate(Placeholder, CollectPictureAreaContent);
-                item.PieceWasMoved += PieceWasMoved;
-                _placeholderItems.Add(item.transform.gameObject);
-
+                item.GetComponent<Placeholder>().PieceWasMoved += PieceWasMoved;
             }
+        }
 
+        private List<GameObject> CreateObjects(int count, GameObject toCreate, Transform parentTransform)
+        {
+            List<GameObject> items = new List<GameObject>();
+            for (int i = 0; i < count; i++)
+            {
+                var item = Instantiate(toCreate, parentTransform);
+                items.Add(item);
+            }
+            return items;
+        }
+
+        private List<GameObject> CreateObjects(List<GameObject> toCreate, Transform parentTransform)
+        {
+            List<GameObject> items = new List<GameObject>();
+            for (int i = 0; i < toCreate.Count; i++)
+            {
+                var item = Instantiate(toCreate[i], parentTransform);
+                items.Add(item);
+            }
+            return items;
+        }
+
+        private void MoveAndResizeObjects(List<GameObject> items, Transform parentTransform)
+        {
             for (int row = 0; row < _size; row++)
             {
                 for (int col = 0; col < _size; col++)
                 {
-                    var areaWidth = CollectPictureAreaContent.GetComponent<RectTransform>().rect.width;
-                    var areaHeight = CollectPictureAreaContent.GetComponent<RectTransform>().rect.height;
+                    var areaWidth = parentTransform.GetComponent<RectTransform>().rect.width;
+                    var areaHeight = parentTransform.GetComponent<RectTransform>().rect.height;
 
-                    _placeholderItems[col + (row * _size)].GetComponent<RectTransform>().sizeDelta = new Vector2(areaWidth / (float)_size,
+                    items[col + (row * _size)].GetComponent<RectTransform>().sizeDelta = new Vector2(areaWidth / (float)_size,
                         areaHeight / (float)_size);
 
-                    _placeholderItems[col + (row * _size)].transform.localPosition =
+                    items[col + (row * _size)].transform.localPosition =
                         new Vector3(areaWidth * (col / (float)_size), areaHeight * (row / (float)_size), 0);
 
-                    _placeholderItems[col + (row * _size)].name = $"{(row * _size) + col}";
+                    items[col + (row * _size)].name = $"{(row * _size) + col}";
                 }
             }
         }
@@ -98,9 +105,9 @@ namespace Assets.Puzzle.Scripts.UI
 
         private void OnDestroy()
         {
-            for (int i = 0; i < _placeholderItems.Count; i++)
+            foreach (var item in _placeholderItems)
             {
-                _placeholderItems[i].GetComponent<Placeholder>().PieceWasMoved -= PieceWasMoved;
+                item.GetComponent<Placeholder>().PieceWasMoved -= PieceWasMoved;
             }
         }
     }

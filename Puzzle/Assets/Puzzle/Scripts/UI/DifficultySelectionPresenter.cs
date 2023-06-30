@@ -55,6 +55,9 @@ namespace Assets.Puzzle.Scripts.UI
         {
             float width = _targetSprite.texture.width / (float)size;
             float height = _targetSprite.texture.height / (float)size;
+            var areaWidth = Option.PiecesTransform.GetComponent<RectTransform>().rect.width;
+            var areaHeight = Option.PiecesTransform.GetComponent<RectTransform>().rect.height;
+
             for (int row = 0; row < size; row++)
             {
                 for (int col = 0; col < size; col++)
@@ -66,17 +69,14 @@ namespace Assets.Puzzle.Scripts.UI
 
                     var sprite = Sprite.Create(_targetSprite.texture, rect, Vector2.one * 0.5f);
                     var item = Instantiate(piecePrefab, parent);
-                    var areaWidth = Option.PiecesTransform.GetComponent<RectTransform>().rect.width;
-                    var areaHeight = Option.PiecesTransform.GetComponent<RectTransform>().rect.height;
 
-                    item.GetComponent<RectTransform>().sizeDelta = new Vector2(areaWidth / (float) size ,
-                        areaHeight / (float) size);
+                    item.GetComponent<RectTransform>().sizeDelta = new Vector2(areaWidth / size, areaHeight / size);
 
                     item.GetComponent<Image>().sprite = sprite;
                     item.transform.localPosition = 
                         new Vector3(areaWidth * (col / (float)size), areaHeight * (row / (float)size), 0);
 
-                    item.transform.localScale = new Vector3(1 - 0.1f, 1 - 0.1f, 1 - 0.1f);
+                    item.transform.localScale = Constants.PieceScale * Vector3.one;
 
                     item.name = $"{(row * size) + col}";
                 }

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 namespace Assets.Puzzle.Scripts.Interfaces.UI
 {
     public interface IView

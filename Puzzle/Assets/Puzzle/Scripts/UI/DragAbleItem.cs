@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Assets.Puzzle.Scripts.Enums;
+using Assets.Puzzle.Scripts.Extensions;
+using Assets.Puzzle.Scripts.Interfaces.UI;
+using Assets.Puzzle.Scripts.Parameters;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Puzzle.Scripts.UI
 {
-    public class DragAbleItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+    public class DragAbleItem : MonoBehaviour, IDragAbleItem, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         private RectTransform _rectTransform;
         private CanvasGroup _canvasGroup;
@@ -17,7 +20,7 @@ namespace Assets.Puzzle.Scripts.UI
         {
             _rectTransform = GetComponent<RectTransform>();
             _canvasGroup = GetComponent<CanvasGroup>();
-            _scaleFactor = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>().scaleFactor;
+            _scaleFactor = GameObject.FindGameObjectWithTag(ETags.Canvas.ToStringCached()).GetComponent<Canvas>().scaleFactor;
             _InitialParent = transform.parent;
         }
 
@@ -66,13 +69,10 @@ namespace Assets.Puzzle.Scripts.UI
         }
         private void CheckOtherPiecesOverlaping()
         {
-            bool check = false;
-            float range = 50f;
-
-            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, Constants.OverlapRayCastRange);
             foreach (Collider2D hit in hitColliders)
             {
-                if (hit.name != gameObject.name && hit.gameObject.tag == "Piece")
+                if (hit.name != gameObject.name && hit.gameObject.tag == ETags.Piece.ToStringCached())
                 {
                     ResetPosition();
                     break;

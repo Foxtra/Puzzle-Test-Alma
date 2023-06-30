@@ -1,7 +1,6 @@
 using Assets.Puzzle.Scripts.Parameters;
 using Cysharp.Threading.Tasks;
 
-
 namespace Assets.Puzzle.Scripts.Interfaces.GameMagagement
 {
     public interface IGameManager

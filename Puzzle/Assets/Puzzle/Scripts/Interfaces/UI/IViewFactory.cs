@@ -1,6 +1,5 @@
 using System;
 
-
 namespace Assets.Puzzle.Scripts.Interfaces.UI
 {
     public interface IViewFactory

@@ -17,5 +17,7 @@ namespace Assets.Puzzle.Scripts.Parameters
 
         public static string PicturesPath = "EPictures";
         public static string GameOverText = "Your Time is";
+        public static float PieceScale = 0.93f;
+        public static float OverlapRayCastRange = 50f;
     }
 }
