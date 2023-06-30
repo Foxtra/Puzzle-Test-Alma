@@ -3,6 +3,7 @@ using Assets.Puzzle.Scripts.Interfaces.Core;
 using Assets.Puzzle.Scripts.Interfaces.GameMagagement;
 using Assets.Puzzle.Scripts.Interfaces.UI;
 using Assets.Puzzle.Scripts.Parameters;
+using System;
 using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace Assets.Puzzle.Scripts.Core
         private ISystemResourceManager _resourceManager;
 
         private Dictionary<int, GameObject> PictureState = new Dictionary<int, GameObject>();
-        private Timer _timer = new Timer();
+        private DateTime _startTime = DateTime.Now;
 
         public GameModel(IGameManager gameManager, IViewFactory viewFactory,
            ISystemResourceManager resourceManager, ModelParameters parameters)
@@ -34,8 +35,6 @@ namespace Assets.Puzzle.Scripts.Core
             _gamePresenter.ShowAvailablePieces(PictureState);
             _gamePresenter.ShowPlaceHolders(PictureState.Count);
             _gamePresenter.PieceMoved += CheckWinCondition;
-
-            _timer.Start();
         }
 
         private void ParseChildObjects(Dictionary<string, GameObject> gameParameter)
@@ -67,9 +66,8 @@ namespace Assets.Puzzle.Scripts.Core
                 }
             }
 
-            _timer.Stop();
             _gameOverPresenter.Enable();
-            _gameOverPresenter.SetResult(_timer.Interval);
+            _gameOverPresenter.SetResult((DateTime.Now - _startTime).Seconds);
         }
 
         private void Exit()
