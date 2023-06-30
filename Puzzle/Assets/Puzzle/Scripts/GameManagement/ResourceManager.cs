@@ -1,5 +1,10 @@
+using Assets.BackToSchool.Scripts.Enums;
+using Assets.Puzzle.Scripts.Enums;
 using Assets.Puzzle.Scripts.Extensions;
 using Assets.Puzzle.Scripts.Interfaces.GameMagagement;
+using Assets.Puzzle.Scripts.Interfaces.Input;
+using Assets.Puzzle.Scripts.Interfaces.UI;
+using Assets.Puzzle.Scripts.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,12 +14,36 @@ namespace Assets.Puzzle.Scripts.GameManagement
 {
     public class ResourceManager : IResourceManager, ISystemResourceManager
     {
-        public T GetAsset<T, E>(E item)
-                where T : Object
-                where E : Enum
+        public Camera CreateCamera()
         {
-            var path = $"{typeof(E).Name}/{item.ToStringCached()}";
+            var result = CreatePrefabInstance<Camera, EGame>(EGame.Camera);
+            return result;
+        }
+
+        public IInputManager CreateInputManager()
+        {
+            var result = CreatePrefabInstance<IInputManager, EGame>(EGame.InputManager);
+            return result;
+        }
+
+        public IUIRoot CreateUIRoot(Camera worldSpaceCamera)
+        {
+            var result = CreatePrefabInstance<UIRoot, Eviews>(Eviews.UIRoot);
+            result.Initialize(worldSpaceCamera);
+            return result;
+        }
+
+        public T GetAsset<T>(string path)
+                where T : Object
+        {
             var result = Resources.Load<T>(path);
+            return result;
+        }
+
+        public T[] GetAllAssets<T>(string path)
+                 where T : Object
+        {
+            var result = Resources.LoadAll<T>(path);
             return result;
         }
 
