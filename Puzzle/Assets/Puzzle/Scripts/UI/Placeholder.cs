@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,14 +8,23 @@ namespace Assets.Puzzle.Scripts.UI
     {
         public event Action<int, int> PieceWasMoved;
 
+        private GameObject _lastDroppedItem;
+
         public void OnDrop(PointerEventData eventData)
         {
             GameObject dropped = eventData.pointerDrag;
             DragAbleItem dragAbleItem = dropped.GetComponent<DragAbleItem>();
-            dragAbleItem.ParentAfterDrag = transform;
-
             dropped.GetComponent<Transform>().position = GetComponent<Transform>().position;
-            PieceWasMoved?.Invoke(int.Parse(gameObject.name), int.Parse(dragAbleItem.gameObject.name));
+
+            if (_lastDroppedItem != null && _lastDroppedItem.name != dropped.name && _lastDroppedItem.transform.position == dropped.transform.position)
+            {
+                dragAbleItem.ResetPosition();
+            }
+            else
+            {
+                PieceWasMoved?.Invoke(int.Parse(gameObject.name), int.Parse(dropped.name));
+                _lastDroppedItem = dropped;
+            }
         }
     }
 }

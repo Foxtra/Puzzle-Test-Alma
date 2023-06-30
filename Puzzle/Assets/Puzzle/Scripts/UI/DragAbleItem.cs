@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Puzzle.Scripts.UI
 {
     public class DragAbleItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
-        public Transform ParentAfterDrag;
-
         private RectTransform _rectTransform;
         private CanvasGroup _canvasGroup;
+        private Transform _InitialParent;
+        private Vector2 _initialAnchoredPosition;
 
         private float _scaleFactor;
 
@@ -18,12 +17,13 @@ namespace Assets.Puzzle.Scripts.UI
             _rectTransform = GetComponent<RectTransform>();
             _canvasGroup = GetComponent<CanvasGroup>();
             _scaleFactor = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>().scaleFactor;
+            _InitialParent = transform.parent;
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
             _canvasGroup.blocksRaycasts = false;
-            ParentAfterDrag = transform.parent;
+            _initialAnchoredPosition = _rectTransform.anchoredPosition;
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -34,7 +34,12 @@ namespace Assets.Puzzle.Scripts.UI
         public void OnEndDrag(PointerEventData eventData)
         {
             _canvasGroup.blocksRaycasts = true;
-            transform.SetParent(ParentAfterDrag);
+        }
+
+        public void ResetPosition()
+        {
+            _rectTransform.anchoredPosition = _initialAnchoredPosition;
+            transform.SetParent(_InitialParent);
         }
     }
 }
