@@ -15,8 +15,5 @@ namespace Assets.Puzzle.Scripts.UI
 
         public void Enable() => gameObject.SetActive(true);
         public void Disable() => gameObject.SetActive(false);
-
-        public async void Show() { }
-        public async void Hide() { }
     }
 }

@@ -19,7 +19,7 @@ namespace Assets.Puzzle.Scripts.UI
         private void Start()
         {
             restartButton.onClick.AddListener(Restart);
-            restartButton.onClick.AddListener(Exit);
+            exitButton.onClick.AddListener(Exit);
         }
 
         public void SetResult(double result)

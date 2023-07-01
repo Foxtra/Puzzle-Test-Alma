@@ -7,7 +7,5 @@ namespace Assets.Puzzle.Scripts.Interfaces.UI
         public void SetRoot(RectTransform canvas);
         public void Enable();
         public void Disable();
-        public void Show();
-        public void Hide();
     }
 }

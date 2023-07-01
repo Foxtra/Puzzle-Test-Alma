@@ -145,6 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2629391479296030373}
   - component: {fileID: 3498545472738863698}
+  - component: {fileID: 8222188365087038784}
   m_Layer: 0
   m_Name: GameOver
   m_TagString: Untagged
@@ -191,6 +192,18 @@ MonoBehaviour:
   restartButton: {fileID: 1202001657455392286}
   exitButton: {fileID: 5814471495519322107}
   resultText: {fileID: 5917488015365401594}
+--- !u!225 &8222188365087038784
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2629391479296030370}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2629391479585600028
 GameObject:
   m_ObjectHideFlags: 0
